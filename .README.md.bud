@@ -5,23 +5,35 @@
 'use strict'
 
 const { readmeMdBud } = require('ape-tmpl')
+const apeDoc = require('ape-doc')
 const pkg = require('./package.json')
+const aglob = require('aglob')
 
 module.exports = readmeMdBud({
   pkg,
   repo: pkg.repository,
   sections: 'doc/guides/*.md.hbs',
   badges: {
-    travis: true,
-    codeclimate: true,
-    codeclimateCoverage: true,
+    travis: false,
+    travisCom: true,
+    travisComToken: 'aeFzCpBZebyaRijpCFmm',
+    codeclimate: false,
+    codeclimateCoverage: false,
     gemnasium: false,
     npm: true,
     standard: true
   },
   overview: 'doc/overview.md',
   links: require('./doc/links'),
-  vars: {}
+  vars: {
+    classes: aglob.sync('lib/*.js')
+      .filter((filename) => !/index\.js$/.test(filename))
+      .map((filename) => {
+        let [comments] = apeDoc.commentsInFile(filename)
+        let clazz = comments.class[ 0 ]
+        return clazz
+      })
+  }
 })
 
 if (!module.parent) {
