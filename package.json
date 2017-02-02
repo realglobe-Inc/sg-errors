@@ -1,6 +1,6 @@
 {
   "name": "sg-errors",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Error object for SUGOS",
   "main": "lib",
   "browser": "shim/browser",
